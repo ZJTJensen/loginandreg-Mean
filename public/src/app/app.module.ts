@@ -9,12 +9,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { UserService } from './user.service';
+import { SuccessComponent } from './success/success.component';
+import {FilterPipe, SortByPipe} from './pipe'
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    SuccessComponent,
+    FilterPipe, 
+    SortByPipe
   ],
   imports: [
     FormsModule,

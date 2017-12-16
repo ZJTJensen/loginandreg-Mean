@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Connect to mongoose, Overwrite mpromise, mongoose's deprecated promise implementation
-const DBNAME = null
+const DBNAME = 'user1234'
 mongoose.connect(`mongodb://localhost/${DBNAME}`)
 
 if(DBNAME) console.log(`Connected to ${DBNAME}`);

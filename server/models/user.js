@@ -33,7 +33,7 @@ const UserSchema = new Schema({
         required: [true,'a password is required'],
         validate: {
           validator: function( value ) {
-            return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,32}/.test( value );
+            return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,15}/.test( value );
           },
           message: "Password failed validation, you must have at least 1 number, uppercase and special character"
         
@@ -54,7 +54,7 @@ const UserSchema = new Schema({
     },
     birthdate:{
         type: Date,
-        required:[true, "birthay "],
+        required:[true, "birthay is required"],
         validate:{
             validator:function(value){
                 let years= new Date().getFullYear()-value.getFullYear();

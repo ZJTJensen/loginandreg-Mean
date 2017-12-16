@@ -1,8 +1,8 @@
 <fieldset id= "register">
   <legend>Registration</legend>
 
-  <form #formErrors='ngForm'(submit)="create(user)">
-    <p>First Name: <input 
+  <form #regForm='ngForm'(submit)="create(user)">
+    <p class="text">First Name: <input 
       type="text" 
       name="first_name" 
       required 
@@ -10,9 +10,14 @@
       maxlength="24"
       [(ngModel)]="user.first_name"
       #first_name='ngModel'
-    /><span *ngIf ="first_name.errors">First Name is Required</span></p>
+    /><br><span *ngIf ="first_name.errors">First Name is Required</span>
+  <div *ngIf='err'>
+      <span *ngIf ="err.errors.first_name">{{err.errors.first_name.message}}</span>
 
-        <p>Last Name: <input 
+  </div>
+  
+
+        <p class="text">Last Name: <input 
           type="text" 
           name="last_name" 
           required 
@@ -20,9 +25,14 @@
           maxlength="24"
           [(ngModel)]="user.last_name"
           #last_name='ngModel'
-        /><span *ngIf ="last_name.errors">Last Name is Required</span></p>
+        /><br><span *ngIf ="last_name.errors">Last Name is Required</span>
+        <div *ngIf='err'>
+            <span *ngIf ="err.errors.last_name">{{err.errors.last_name.message}}</span>
+      
+        </div>
+      
 
-        <p>Email: <input 
+        <p class="text">Email: <input 
           type="text" 
           name="email" 
           required 
@@ -30,31 +40,58 @@
           maxlength="24"
           [(ngModel)]="user.email"
           #email='ngModel'
-        /><span *ngIf ="email.errors">Email  is Required</span></p>
+        /><br><span *ngIf ="email.errors">Email  is Required</span>
+        <div *ngIf='err'>
+            <span *ngIf ="err.errors.email">{{err.errors.email.message}}</span>
+      
+        </div>
+      
 
-        <p>Password: <input 
+        <p class="text">Password: <input 
           type="password" 
           name="password" 
           required 
-          minlength="10" 
-          maxlength="24"
+          minlength="8" 
+          maxlength="15"
           pattern="^([a-zA-Z0-9@*#]{8,15})$"
           [(ngModel)]="user.password"
           #password='ngModel'
-        /><span *ngIf ="password.errors">Password is Required</span></p>
+        /><br><span *ngIf ="password.errors">Password is Required</span>
+        <div *ngIf='err'>
+            <span *ngIf ="err.errors.password">{{err.errors.password.message}}</span>
+      
+        </div>
+      
 
-        <p>Confirm Password: <input 
+        <p class="text">Confirm Password: <input 
           type="password" 
           name="password_confirm" 
           required 
           [(ngModel)]="user.password_confirm"
           #password_confirm='ngModel'
-          /><span *ngIf ="user.password != user.password_confirm">Passwords must match</span></p>
+          /><br><span *ngIf ="user.password != user.password_confirm">Passwords must match</span>
+          <div *ngIf='err'>
+              <span *ngIf ="err.errors.password_confirm">{{err.errors.password_confirm.message}}</span>
+        
+          </div>
+        
 
       <p class="text">Birthdate: 
-        <input type="date" name="birthdate"></p><hr>
+        <input 
+        type="date" 
+        name="birthdate"
+        required 
+        [(ngModel)]="user.birthdate"
+        #birthdate='ngModel'></p>
+        <div *ngIf='err'>
+            <span *ngIf ="err.errors.birthdate">{{err.errors.birthdate.message}}</span>
+      
+        </div>
+        
+        
+        <hr>
 
-        <input *ngIf="formErrors.valid" class="button" type="submit" value="Register">
+        <input [disabled]="regForm.invalid" class="button" type="submit" value="Register">
 
   </form>
 </fieldset>
@@ -62,13 +99,34 @@
 <fieldset id="login">
   <legend>Login</legend>
 
-  <form #formErrors='ngForm'(submit)="onSubmit()">
-      <p class="text">Email: <input type="text" name="email" id=""></p>
-      <p class="text">Password <input type="password" name="password"></p><hr>
-      <input type="submit" value="Login" class="button">
+  <form #loginForm='ngForm'(submit)="login(logins)">
+      <p class="text">Email: <input 
+        type="text" 
+        name="user.email"
+        required
+        minlength="1"
+        [(ngModel)]="logins.email"
+        #emails='ngModel'
+        ></p>
+
+      <p class="text">Password <input 
+        type="password" 
+        name="user.password"
+        required
+        minlength="1"
+        [(ngModel)]="logins.password"
+        #passwords='ngModel'
+        ></p><hr>
+        <div *ngIf='loginerrs == true'>
+            <span class="text">Wrong Login Info</span>
+      
+        </div>
+
+      <input [disabled]="loginForm.invalid" type="submit" value="Login" class="button">
   </form>
       
 </fieldset>
+
 
 
 

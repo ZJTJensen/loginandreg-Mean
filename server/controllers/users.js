@@ -17,44 +17,69 @@ module.exports = {
         
         return res.status(404).json(err);
     },
+    findAll(req,res){
+        User.find({}, function(err,user){
+            if (err) {
+                return res.status(404).json(err);
+            }
+            return res.json(user);
+        });
+    },
+    delAll(req,res){
+        User.remove({}, (err,user)=>{
+            if (err) {
+                return res.status(404).json(err);
+            }
+            return res.json(user);
+        })
+    },
     login(req, res) {
         var body = req.body;
         if(!body.email || !body.password){
-            req.session.no = ["Wrong login info"];
+            err = "Wrong login info";
            return res.status(404).json(err);
         }
         User.find({email: body.email}, function(err, user){
             if(user.length < 1){
-                req.session.no = ["Wrong login info"];
+                err = "Wrong login info";
                return res.status(404).json(err);
             }  
-            user=user[0];  
+            user=user[0]; 
                 if(User.schema.methods.match(req.body.password, user.password)){
-                    req.session.id = user.id;
+                    req.session._id = user._id.toString();
+                    
                     return res.json(user);
                 }else{
-                req.session.no = ["Wrong login info"];
+                err = "Wrong login info";
                 return res.status(404).json(err);
                 }
             })
     },
     register(req, res ){
         var body = req.body;
-           var user = new User({
-                first_name: body.first_name,
-                last_name: body.last_name,
-                email: body.email,
-                password: body.password,
-                password_confirm: body.password_confirm,
-                birthdate: body.birthdate
-            })
-            user.save(function(errs){
-                if(!errs){
-                req.session.id = user.id;
+           var user = new User(body)
+            user.save(function(err){
+                if(!err){
+                    req.session._id = user._id;
                 return res.json(user);
                 }
-                req.session.errors = errs;
+                var errs = [] 
+                errs.push(err);
                 return res.status(404).json(err);
             });
+    },
+    session(req, res){
+        if(!'_id' in req.session){
+            return res.json(false)
+        }
+       
+        User.findById(req.session._id, function(err, user){
+            
+            if(user){
+                
+              return res.json(user);
+            }
+            return res.json(false);
+        })
     }
 }
